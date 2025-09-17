@@ -1,0 +1,23 @@
+variant: openshift
+version: 4.19.0
+metadata:
+  name: 99-master-multipath
+  labels:
+    machineconfiguration.openshift.io/role: master
+storage:
+  files:
+    - path: /etc/multipath.conf
+      mode: 420
+      overwrite: true
+      contents:
+        inline: |
+          defaults {
+                  user_friendly_names yes
+                  find_multipaths yes
+          }
+          blacklist {
+          }
+systemd:
+  units:
+    - name: multipathd.service
+      enabled: true
